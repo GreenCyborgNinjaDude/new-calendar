@@ -1,0 +1,27 @@
+<html>
+  <head>
+    <script src="./calendar.js"></script>
+    <link rel="stylesheet" href="calendar.css" />
+    <script src="./calendar.js"></script>
+
+    <script>
+      var events = [];
+      var current = new Date();
+
+      window.onload = function () {
+        initCalendar("my-calendar", {
+          events: events,
+          value: current,
+          onLeftClick: () => {},
+          onRightClick: () => {},
+        });
+      };
+    </script>
+  </head>
+
+  <body>
+    <div id="my-calendar"></div>
+
+    <editform> </editform>
+  </body>
+</html>
