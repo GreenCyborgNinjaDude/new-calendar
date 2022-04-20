@@ -1,4 +1,4 @@
-function initCalendar(elementId, setings) {
+function initCalendar(elementId, settings) {
   //month in full title
   let monthTitle = [
     "January",
@@ -20,7 +20,7 @@ function initCalendar(elementId, setings) {
 
   var parent = createCalendarContainerWhole();
   createMonthContainer(parent);
-  createCalendarContainerInside(parent);
+  createCalendarContainerInside(parent, settings);
 
   // calendar-container-whole
   function createCalendarContainerWhole() {
@@ -81,7 +81,7 @@ function initCalendar(elementId, setings) {
   }
 
   //calendar-container-inside
-  function createCalendarContainerInside(parent) {
+  function createCalendarContainerInside(parent, settings) {
     var calendarContainerInside = createTag(parent, "div", (tag) => {
       tag.className = "calendar-container-inside";
     });
@@ -110,33 +110,74 @@ function initCalendar(elementId, setings) {
     //date-slot
     function createDateSlot() {
       var dateSlot = createTag(calendarContainerInside, "div", (tag) => {
-        tag.className = "date-slot";
+        tag.className = "date-container";
       });
-      //generateDaysInMonth();
+      var currentYear = settings.value.getFullYear();
+      var currentMonth = settings.value.getMonth();
+      var daysInMonth = [];
+
+      /*generateDaysInMonth();
 
       //Calculate & generate dates in a month
-      // function generateDaysInMonth(currentMonth, currentYear) {
-      //   var firstDayOfMonth = new Date(currentYear, currentMonth, 1).getDate();
-      //   var lastDayOfMonth = new Date(
-      //     currentYear,
-      //     currentMonth + 1,
-      //     0
-      //   ).getDate();
+      function generateDaysInMonth() {
+        var date = createTag(dateSlot, "div", (tag) => {
+          tag.className = "date";
+          tag.style.backgroundColor = "wheat";
+        });
 
-      //   var daysInMonth = [];
+        var firstDayOfMonth = new Date(currentYear, currentMonth, 1).getDate();
+        var lastDayOfMonth = new Date(currentYear, currentMonth + 1, 0 ).getDate();
 
-      //   for (var i = firstDayOfMonth; i <= lastDayOfMonth; i++) {
-      //     var date = new Date(currentYear, currentMonth);
-      //     date.setDate(i);
+        for (var i = firstDayOfMonth; i <= lastDayOfMonth; i++) {
+          var date = new Date(currentYear, currentMonth);
+          date.setDate(i);
+          daysInMonth.push(date);
+          date.appendChild()
+          //console.log(date);
+        }
 
-      //     daysInMonth.push(date);
-      //     //console.log(date);
-      //   }
+        //console.log(daysInMonth);
 
-      //   console.log(daysInMonth);
+        return daysInMonth;
+      }
 
-      //   return daysInMonth;
-      // }
+      //Calculate & generate padding day (head front)
+      function generatePadDayHead() {
+        var padHead = createTag(dateSlot, "div", (tag) => {
+          tag.className = "date";
+          tag.style.backgroundColor = "grey";
+        });
+        var padDaysHead = [];
+        var firstDayOfMonth = new Date(currentYear, currentMonth, 1).getDay();
+        for (var i = 0; i < firstDayOfMonth; i++) {
+          var j = i;
+          padDaysHead.push(new Date(currentYear, currentMonth, -j));
+          //console.log("head " + i + ": " + padDaysHead[i]);
+        }
+        return padDaysHead.reverse();
+      }
+
+      //Calculate & generate padding day (tail end)
+      function generatePadDayTail() {
+        var padTail = createTag(dateSlot, "div", (tag) => {
+          tag.className = "date";
+          tag.style.backgroundColor = "grey";
+        });
+        var padDaysTail = [];
+        var lastDayOfMonth = new Date(
+          currentYear,
+          currentMonth + 1,
+          0
+        ).getDay();
+        //console.log("lastDayOfMonth:" + lastDayOfMonth);
+        for (var i = lastDayOfMonth, j = 1; i < 6; i++, j++) {
+          padDaysTail.push(new Date(currentYear, currentMonth + 1, j));
+        }
+        //for (var k = 0; k < padDaysTail.length; k++) {
+        //  console.log("Tail " + k + ": " + padDaysTail[k]);
+        //}
+        return padDaysTail;
+      }*/
     }
   }
 
