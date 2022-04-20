@@ -115,69 +115,69 @@ function initCalendar(elementId, settings) {
       var currentYear = settings.value.getFullYear();
       var currentMonth = settings.value.getMonth();
       var daysInMonth = [];
+      var padDaysHead = [];
 
-      /*generateDaysInMonth();
+      generateDaysInMonth();
 
       //Calculate & generate dates in a month
       function generateDaysInMonth() {
-        var date = createTag(dateSlot, "div", (tag) => {
-          tag.className = "date";
-          tag.style.backgroundColor = "wheat";
-        });
-
-        var firstDayOfMonth = new Date(currentYear, currentMonth, 1).getDate();
-        var lastDayOfMonth = new Date(currentYear, currentMonth + 1, 0 ).getDate();
-
-        for (var i = firstDayOfMonth; i <= lastDayOfMonth; i++) {
-          var date = new Date(currentYear, currentMonth);
-          date.setDate(i);
-          daysInMonth.push(date);
-          date.appendChild()
-          //console.log(date);
-        }
-
-        //console.log(daysInMonth);
-
-        return daysInMonth;
-      }
-
-      //Calculate & generate padding day (head front)
-      function generatePadDayHead() {
-        var padHead = createTag(dateSlot, "div", (tag) => {
-          tag.className = "date";
-          tag.style.backgroundColor = "grey";
-        });
-        var padDaysHead = [];
+        var firstDateOfMonth = new Date(currentYear, currentMonth, 1).getDate();
         var firstDayOfMonth = new Date(currentYear, currentMonth, 1).getDay();
-        for (var i = 0; i < firstDayOfMonth; i++) {
-          var j = i;
-          padDaysHead.push(new Date(currentYear, currentMonth, -j));
-          //console.log("head " + i + ": " + padDaysHead[i]);
-        }
-        return padDaysHead.reverse();
-      }
-
-      //Calculate & generate padding day (tail end)
-      function generatePadDayTail() {
-        var padTail = createTag(dateSlot, "div", (tag) => {
-          tag.className = "date";
-          tag.style.backgroundColor = "grey";
-        });
-        var padDaysTail = [];
         var lastDayOfMonth = new Date(
           currentYear,
           currentMonth + 1,
           0
         ).getDay();
-        //console.log("lastDayOfMonth:" + lastDayOfMonth);
-        for (var i = lastDayOfMonth, j = 1; i < 6; i++, j++) {
-          padDaysTail.push(new Date(currentYear, currentMonth + 1, j));
+        var lastDateOfMonth = new Date(
+          currentYear,
+          currentMonth + 1,
+          0
+        ).getDate();
+
+        //calculate padding day for previous month
+        for (var i = 0; i < firstDayOfMonth; i++) {
+          var j = i;
+          padDaysHead.push({
+            date: new Date(currentYear, currentMonth, -j),
+            dayType: "pad",
+          });
+          //console.log("head " + i + ": " + padDaysHead[i]);
         }
-        //for (var k = 0; k < padDaysTail.length; k++) {
-        //  console.log("Tail " + k + ": " + padDaysTail[k]);
-        //}
-        return padDaysTail;
-      }*/
+
+        //calculate normal day
+        for (var i = firstDateOfMonth; i <= lastDateOfMonth; i++) {
+          var date = new Date(currentYear, currentMonth);
+          date.setDate(i);
+
+          daysInMonth.push({ date: date, dayType: "norm" });
+          //console.log(date);
+        }
+
+        //calculate padding day for next month
+        for (var i = lastDayOfMonth, j = 1; i < 6; i++, j++) {
+          daysInMonth.push({
+            date: new Date(currentYear, currentMonth + 1, j),
+            dayType: "pad",
+          });
+          //console.log("head " + i + ": " + padDaysHead[i]);
+        }
+
+        daysInMonth = padDaysHead.reverse().concat(daysInMonth);
+        daysInMonth.forEach((element) => {
+          var date = createTag(dateSlot, "div", (tag) => {
+            tag.className = "date";
+            tag.textContent = element.date.getDate();
+            if (element.dayType === "norm") {
+              tag.style.backgroundColor = "wheat";
+            } else {
+              tag.style.backgroundColor = "grey";
+            }
+          });
+        });
+        console.log(daysInMonth);
+
+        return daysInMonth;
+      }
     }
   }
 

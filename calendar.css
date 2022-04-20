@@ -53,7 +53,7 @@ footer{
 .calendar-container-whole{
     display: inline-block;
     width: 840px;
-    height: 50%;
+    height: auto;
     border: 840px 840px rgb(0, 0, 0);
     border-top:solid 4px black;
     border-right:solid 4px black;
