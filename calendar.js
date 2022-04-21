@@ -1,4 +1,8 @@
 function initCalendar(elementId, settings) {
+  let state = {
+    value: undefined,
+  };
+
   //month in full title
   let monthTitle = [
     "January",
@@ -18,19 +22,32 @@ function initCalendar(elementId, settings) {
   //days in the week
   let daysInTheWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
-  var parent = createCalendarContainerWhole();
-  createMonthContainer(parent);
-  createCalendarContainerInside(parent, settings);
+  init();
+
+  function init() {
+    state.value = settings.value;
+
+    render();
+  }
+
+  function render() {
+    var parent = createCalendarContainerWhole();
+    createMonthContainer(parent, settings);
+    createCalendarContainerInside(parent, settings);
+  }
 
   // calendar-container-whole
   function createCalendarContainerWhole() {
     var calendarContainerWhole = document.getElementById(elementId);
+
+    removeAllChildNodes(calendarContainerWhole);
+
     calendarContainerWhole.className = "calendar-container-whole";
     return calendarContainerWhole;
   }
 
   // month-container
-  function createMonthContainer(parent) {
+  function createMonthContainer(parent, settings) {
     var monthContainer = createTag(parent, "div", (tag) => {
       tag.className = "month-container";
     });
@@ -47,7 +64,8 @@ function initCalendar(elementId, settings) {
 
       createTag(titleContainer, "span", (tag) => {
         tag.className = "month-title";
-        tag.textContent = "April  2022";
+        tag.textContent =
+          monthTitle[state.value.getMonth()] + " " + state.value.getFullYear();
       });
     }
     //month-left-arrow
@@ -60,7 +78,18 @@ function initCalendar(elementId, settings) {
         tag.className = "arrow left";
 
         tag.onclick = () => {
-          setings.onLeftClick && setings.onLeftClick();
+          var currentMonth = state.value.getMonth();
+          var currentYear = state.value.getFullYear();
+
+          var nextMonth = currentMonth - 1;
+
+          var newDate = new Date(currentYear, nextMonth, 1);
+          state.value = newDate;
+          settings.onRightClick && settings.onRightClick(newDate);
+
+          settings.onLeftClick && settings.onLeftClick();
+
+          render();
         };
       });
     }
@@ -73,8 +102,18 @@ function initCalendar(elementId, settings) {
       createTag(rightArrowContainer, "i", (tag) => {
         tag.className = "arrow right";
 
+        //on right arrow clicked logic
         tag.onclick = () => {
-          setings.onRightClick && setings.onRightClick();
+          var currentMonth = state.value.getMonth();
+          var currentYear = state.value.getFullYear();
+
+          var nextMonth = currentMonth + 1;
+
+          var newDate = new Date(currentYear, nextMonth, 1);
+          state.value = newDate;
+          settings.onRightClick && settings.onRightClick(newDate);
+
+          render();
         };
       });
     }
@@ -112,8 +151,8 @@ function initCalendar(elementId, settings) {
       var dateSlot = createTag(calendarContainerInside, "div", (tag) => {
         tag.className = "date-container";
       });
-      var currentYear = settings.value.getFullYear();
-      var currentMonth = settings.value.getMonth();
+      var currentYear = state.value.getFullYear();
+      var currentMonth = state.value.getMonth();
       var daysInMonth = [];
       var padDaysHead = [];
 
@@ -162,19 +201,21 @@ function initCalendar(elementId, settings) {
           //console.log("head " + i + ": " + padDaysHead[i]);
         }
 
+        //Join pad day head & the rest of the day
         daysInMonth = padDaysHead.reverse().concat(daysInMonth);
+
+        //add style to pad day & normal day
         daysInMonth.forEach((element) => {
           var date = createTag(dateSlot, "div", (tag) => {
+            //var hover = "table td:hover{ background-color: rgb(81, 189, 240)}";
             tag.className = "date";
             tag.textContent = element.date.getDate();
-            if (element.dayType === "norm") {
-              tag.style.backgroundColor = "wheat";
-            } else {
+            if (element.dayType === "pad") {
               tag.style.backgroundColor = "grey";
             }
           });
         });
-        console.log(daysInMonth);
+        //console.log(daysInMonth);
 
         return daysInMonth;
       }
@@ -187,5 +228,12 @@ function initCalendar(elementId, settings) {
     adjustStyleCallback(tag);
     parent.appendChild(tag);
     return tag;
+  }
+
+  //remove all element in a container
+  function removeAllChildNodes(parent) {
+    while (parent.firstChild) {
+      parent.removeChild(parent.firstChild);
+    }
   }
 }

@@ -5,15 +5,23 @@
     <script src="./calendar.js"></script>
 
     <script>
-      var events = [];
+      var events = [
+        //date: 13 April 2022
+        //reminder: yes
+        //time: 12:30 PM
+        //event: Job Interview
+        //description: here lies very boring text.....
+      ];
       var current = new Date();
 
       window.onload = function () {
         initCalendar("my-calendar", {
           events: events,
           value: current,
-          onLeftClick: () => {},
-          onRightClick: () => {},
+          onLeftClick: (currentValue) => {},
+          onRightClick: (currentValue) => {
+            //console.log("====> after the change ", currentValue);
+          },
         });
       };
     </script>
