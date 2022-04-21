@@ -1,23 +1,7 @@
-.calendar-title{
-    margin: auto;
-    background-color: rgb(194, 0, 0);
-    width: 400px;
-    height: 60px;
-    text-align: center;
-    font-size: 50px;
-    color: rgb(255, 255, 255);
-    border: solid 4px rgb(0, 0, 0);
-}
-
-.calendar-title:active{
-    background-color: blue;
-    border: dotted 4px rgb(218, 255, 11);
-}
-
 .calendar-container-whole{
     display: inline-block;
-    width: 840px;
-    height: auto;
+    width: 45vw;
+    height: 85vh;
     border: 840px 840px rgb(0, 0, 0);
     border-top:solid 4px black;
     border-right:solid 4px black;
@@ -26,7 +10,8 @@
 .month-container{
     display: grid;
     grid-template-columns: 10% 80% 10%;
-    height: 110px;
+    height: 15.4%;
+    width: 99.5%;
     color: rgb(0, 0, 0);
     border-bottom: solid 4px black;
     border-left:solid 4px black;
@@ -35,7 +20,7 @@
     font-family:'Times New Roman', Times, serif;
     font-weight: bold;
     vertical-align: middle;
-    font-size: 90px;
+    font-size: 5.5vw;
 }
 
 .arrow {
@@ -48,7 +33,7 @@
     margin: auto;
 }
 .right {
-    margin-bottom: 15px;
+    margin-bottom: 10%;
     margin-left: 0px;
     transform: rotate(-45deg);
     -webkit-transform: rotate(-45deg);
@@ -57,7 +42,7 @@
     margin: auto;    
 }
 .left {
-    margin-bottom: 15px;
+    margin-bottom: 10%;
     margin-right: 0px;
     transform: rotate(135deg);
     -webkit-transform: rotate(135deg);
@@ -72,29 +57,32 @@
 .day-of-the-week{
     display: grid;
     grid-template-columns: 14.28%  14.28%  14.28%  14.28%  14.28%  14.28%  14.28%;
-    height: 40px;
+    height: 5.6%;
+    width: 99.5%;
     background-color: rgb(182, 0, 0);
     font-family:'Times New Roman', Times, serif;
     font-weight: bold;
-    font-size: 25px;
+    font-size: 1.7em;
     border-bottom: solid 4px rgb(0, 0, 0);
     border-left:solid 4px black;
     text-align: center;
-    padding-top: 10px;
+    padding-top: 1%;
 }
 
 .date-container{
     display: grid;
     grid-template-columns: 14.28%  14.28%  14.28%  14.28%  14.28%  14.28%  14.28%;
+    height: 77.1%;
+    width: 100%;
 }
 
 .date{
     background-color:wheat;
-    height: 100.4px;
+    height: 94%;
     border-left:solid 4px black;
     border-bottom:solid 4px black;
-    padding-top: 5px;
-    padding-left: 5px;
+    padding-top: 2.8%;
+    padding-left: 2%;
     font-family:'Times New Roman', Times, serif;
     font-size: 20px;
 }
