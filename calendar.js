@@ -1,6 +1,7 @@
 function initCalendar(elementId, settings) {
   let state = {
     value: undefined,
+    events: undefined,
   };
 
   //month in full title
@@ -26,7 +27,7 @@ function initCalendar(elementId, settings) {
 
   function init() {
     state.value = settings.value;
-
+    state.events = settings.events;
     render();
   }
 
@@ -213,10 +214,147 @@ function initCalendar(elementId, settings) {
             if (element.dayType === "pad") {
               tag.style.backgroundColor = "grey";
             }
+
+            // check & render event if there is one
+            checkEvents(element, state.events);
+
+            function checkEvents(element, eventHolder) {
+              // console.log(
+              //   "eventHolder: " +
+              //     monthTitle[element.date.getMonth()].substring(0, 3) +
+              //     " " +
+              //     element.date.getDate() +
+              //     " " +
+              //     element.date.getFullYear()
+              // );
+              // eventHolder.forEach((element) => {
+              //   console.log("element: " + element.date);
+              // });
+
+              for (var i = 0; i < element.length; i++) {
+                if (
+                  eventHolder.date ==
+                  monthTitle[element.date.getMonth()].substring(0, 3) +
+                    " " +
+                    element.date.getDate() +
+                    " " +
+                    element.date.getFullYear()
+                ) {
+                  console.log(true);
+                  // var eventShow = document.createElement("div");
+                  // eventShow.className = "event";
+                  // eventShow.id = "user-event";
+                  // eventShow.appendChild(
+                  //   document.createTextNode(holidayDataBase[i].event)
+                  // );
+                  // var timeShow = document.createElement("div");
+                  // timeShow.className = "time";
+                  // timeShow.id = "timming";
+                  // timeShow.appendChild(document.createTextNode(holidayDataBase[i].time));
+                  // tag.append(eventShow);
+                  // tag.append(timeShow);
+                  // break;
+                }
+              }
+            }
+
+            tag.ondblclick = () => {
+              //alert("date is clicked");
+              settings.onSetEvent && settings.onSetEvent();
+              createUserEvent(state.event);
+            };
+
+            //An event container
+            function createUserEvent() {
+              var eventContainer = createTag(date, "div", (tag) => {
+                tag.className = "event-container";
+              });
+              createEventArea();
+              createTimeArea();
+              createSubmitButton();
+
+              //render write area for event
+              function createEventArea() {
+                var event = createTag(eventContainer, "textarea", (tag) => {
+                  tag.className = "user-event";
+                  tag.id = "user-event";
+                  tag.setAttribute("placeholder", "New Event?");
+                });
+              }
+              //render write area for time
+              function createTimeArea() {
+                var time = createTag(eventContainer, "textarea", (tag) => {
+                  tag.className = "user-time";
+                  tag.id = "user-time";
+                  tag.setAttribute("placeholder", "HH:MM PM/AM");
+                });
+              }
+              //Submition button
+              function createSubmitButton() {
+                var reminderCheck = false;
+                var button = createTag(eventContainer, "input", (tag) => {
+                  tag.className = "user-confirmation";
+                  tag.setAttribute("type", "submit");
+                  tag.onclick = () => {
+                    settings.addEvent && settings.addEvent();
+                    alert("clicked");
+
+                    //check if a date does have a reminder
+                    if (
+                      document.getElementById("user-time").value != "" ||
+                      null
+                    ) {
+                      reminderCheck = true;
+                    }
+
+                    //How event will be stored
+                    let data = {
+                      date:
+                        monthTitle[element.date.getMonth()] +
+                        " " +
+                        element.date.getDate() +
+                        " " +
+                        element.date.getFullYear(),
+                      time: document.getElementById("user-time").value,
+                      event: document.getElementById("user-event").value,
+                      reminder: reminderCheck,
+                      //description: "here lies very boring text.....",
+                    };
+
+                    state.events.push(data);
+                    // console.log(
+                    //   daysInTheWeek[element.date.getDay()] +
+                    //     " " +
+                    //     monthTitle[element.date.getMonth()] +
+                    //     " " +
+                    //     element.date.getDate() +
+                    //     " " +
+                    //     element.date.getFullYear()
+                    // );
+                    // console.log(document.getElementById("user-event").value);
+                    // console.log("Reminder: " + data.reminder);
+                    // console.log(document.getElementById("user-time").value);
+                    date.removeChild(eventContainer);
+
+                    //render event to calendar
+                    createTag(date, "div", (tag) => {
+                      tag.className = "event";
+                      tag.textContent = data.event;
+                    });
+
+                    //render time to calendar
+                    createTag(date, "div", (tag) => {
+                      tag.className = "time";
+                      tag.textContent = data.time;
+                    });
+                  };
+                });
+              }
+            }
           });
         });
-        //console.log(daysInMonth);
 
+        //console.log(daysInMonth);
         return daysInMonth;
       }
     }

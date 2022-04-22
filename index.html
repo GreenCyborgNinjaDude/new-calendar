@@ -6,11 +6,18 @@
 
     <script>
       var events = [
-        //date: 13 April 2022
-        //reminder: yes
-        //time: 12:30 PM
-        //event: Job Interview
-        //description: here lies very boring text.....
+        {
+          date: "Apr 14 2022",
+          reminder: true,
+          time: "12:30 PM",
+          event: "Job Interview",
+        },
+        {
+          date: "Apr 22 2022",
+          reminder: false,
+          time: "",
+          event: "Groceries Day",
+        },
       ];
       var current = new Date();
 
@@ -22,6 +29,8 @@
           onRightClick: (currentValue) => {
             //console.log("====> after the change ", currentValue);
           },
+          onSetEvent: () => {},
+          addEvent: () => {},
         });
       };
     </script>
