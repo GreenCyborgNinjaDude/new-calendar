@@ -334,9 +334,10 @@ function initCalendar(elementId, settings) {
           });
 
           renderScriptedEvent(state.events);
+          setInterval(() => reminderNotification(state.events, element), 1000);
 
           // check & render event if there is one
-          function checkEvents(element, eventHolder) {
+          function checkEvents(element, eventHolder, date) {
             var checker = false;
             var currentDate =
               monthTitle[element.date.getMonth()].substring(0, 3) +
@@ -367,6 +368,37 @@ function initCalendar(elementId, settings) {
               });
             }
           }
+
+          //alert user for event (5 min before)
+          function reminderNotification(events, element) {
+            var currentDate =
+              monthTitle[element.date.getMonth()].substring(0, 3) +
+              " " +
+              element.date.getDate() +
+              " " +
+              element.date.getFullYear();
+            events.forEach((selectedEvent) => {
+              //console.log(
+              //selectedEvent.date === currentDate
+              //currentTime() === "03:41 PM"
+              //selectedEvent.reminder === true
+              //);
+              if (
+                selectedEvent.date === currentDate &&
+                currentTime() ===
+                  selectedEvent.alarm.substring(0, 5) +
+                    ":" +
+                    "00" +
+                    selectedEvent.alarm.substring(5, 8) &&
+                selectedEvent.reminder === true
+              ) {
+                alert(
+                  "Event: " + selectedEvent.event + " At " + selectedEvent.time
+                );
+              }
+            });
+          }
+          //
         });
 
         //console.log(daysInMonth);
@@ -392,9 +424,9 @@ function initCalendar(elementId, settings) {
   }
 }
 
+//Current time calculator
 function currentTime() {
   var currentDate = new Date();
-  var timer = document.getElementById("time-display");
   let hh = currentDate.getHours();
   let mm = currentDate.getMinutes();
   let ss = currentDate.getSeconds();
@@ -414,6 +446,9 @@ function currentTime() {
 
   let time = hh + ":" + mm + ":" + ss + " " + session;
 
-  timer.innerText = time;
+  //console.log("inside clock: " + time);
   return time;
 }
+
+//set time very 1000 millisec or 1 sec
+setInterval(() => currentTime(), 1000);
