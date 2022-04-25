@@ -126,7 +126,7 @@ function initCalendar(elementId, settings) {
       tag.className = "calendar-container-inside";
     });
     createDayOfTheWeek();
-    createDateSlot();
+    createDateContainer();
 
     //day-of-the-week
     function createDayOfTheWeek() {
@@ -147,9 +147,9 @@ function initCalendar(elementId, settings) {
       }
     }
 
-    //date-slot
-    function createDateSlot() {
-      var dateSlot = createTag(calendarContainerInside, "div", (tag) => {
+    //date-container
+    function createDateContainer() {
+      var dateContainer = createTag(calendarContainerInside, "div", (tag) => {
         tag.className = "date-container";
       });
       var currentYear = state.value.getFullYear();
@@ -207,7 +207,7 @@ function initCalendar(elementId, settings) {
 
         //add style to pad day & normal day
         daysInMonth.forEach((element) => {
-          var date = createTag(dateSlot, "div", (tag) => {
+          var date = createTag(dateContainer, "div", (tag) => {
             //var hover = "table td:hover{ background-color: rgb(81, 189, 240)}";
             tag.className = "date";
             tag.textContent = element.date.getDate();
@@ -215,55 +215,35 @@ function initCalendar(elementId, settings) {
               tag.style.backgroundColor = "grey";
             }
 
-            // check & render event if there is one
-            checkEvents(element, state.events);
-
-            function checkEvents(element, eventHolder) {
-              // console.log(
-              //   "eventHolder: " +
-              //     monthTitle[element.date.getMonth()].substring(0, 3) +
-              //     " " +
-              //     element.date.getDate() +
-              //     " " +
-              //     element.date.getFullYear()
-              // );
-              // eventHolder.forEach((element) => {
-              //   console.log("element: " + element.date);
-              // });
-
-              for (var i = 0; i < element.length; i++) {
-                if (
-                  eventHolder.date ==
-                  monthTitle[element.date.getMonth()].substring(0, 3) +
-                    " " +
-                    element.date.getDate() +
-                    " " +
-                    element.date.getFullYear()
-                ) {
-                  console.log(true);
-                  // var eventShow = document.createElement("div");
-                  // eventShow.className = "event";
-                  // eventShow.id = "user-event";
-                  // eventShow.appendChild(
-                  //   document.createTextNode(holidayDataBase[i].event)
-                  // );
-                  // var timeShow = document.createElement("div");
-                  // timeShow.className = "time";
-                  // timeShow.id = "timming";
-                  // timeShow.appendChild(document.createTextNode(holidayDataBase[i].time));
-                  // tag.append(eventShow);
-                  // tag.append(timeShow);
-                  // break;
-                }
-              }
-            }
-
+            //prevent adding unwanted event form & delete scripted event
             tag.ondblclick = () => {
               //alert("date is clicked");
               settings.onSetEvent && settings.onSetEvent();
-              createUserEvent(state.event);
+              if (tag.children.length > 0) {
+                state.events.forEach((selectedEvents) => {
+                  if (selectedEvents.event === tag.children[0].textContent) {
+                    state.events.splice(
+                      state.events.indexOf(selectedEvents),
+                      1
+                    );
+                    //console.log(state.events.length);
+                  }
+                });
+                tag.removeChild(tag.children[1]);
+                tag.removeChild(tag.children[0]);
+              }
+              createUserEvent(state.events);
+              tag.ondblclick = () => {
+                deleteUserEvent();
+                createUserEvent(state.events);
+              };
             };
 
+            //Delete event container in date
+            function deleteUserEvent() {
+              date.removeAllChildNodes();
+              date.textContent = element.date.getDate();
+            }
             //An event container
             function createUserEvent() {
               var eventContainer = createTag(date, "div", (tag) => {
@@ -352,6 +332,41 @@ function initCalendar(elementId, settings) {
               }
             }
           });
+
+          renderScriptedEvent(state.events);
+
+          // check & render event if there is one
+          function checkEvents(element, eventHolder) {
+            var checker = false;
+            var currentDate =
+              monthTitle[element.date.getMonth()].substring(0, 3) +
+              " " +
+              element.date.getDate() +
+              " " +
+              element.date.getFullYear();
+            //console.log("currentDate: " + currentDate);
+            eventHolder.forEach((currentEvent) => {
+              if (currentEvent.date === currentDate) {
+                checker = currentEvent;
+              }
+            });
+            return checker;
+          }
+
+          function renderScriptedEvent() {
+            if (checkEvents(element, state.events) != false) {
+              createTag(date, "div", (tag) => {
+                tag.className = "event";
+                tag.textContent = checkEvents(element, state.events).event;
+              });
+
+              //render time to calendar
+              createTag(date, "div", (tag) => {
+                tag.className = "time";
+                tag.textContent = checkEvents(element, state.events).time;
+              });
+            }
+          }
         });
 
         //console.log(daysInMonth);
@@ -362,9 +377,10 @@ function initCalendar(elementId, settings) {
 
   //create tag & set style for that tag
   function createTag(parent, type, adjustStyleCallback) {
+    if (!parent) return;
     var tag = document.createElement(type);
-    adjustStyleCallback(tag);
     parent.appendChild(tag);
+    adjustStyleCallback(tag);
     return tag;
   }
 
@@ -374,4 +390,30 @@ function initCalendar(elementId, settings) {
       parent.removeChild(parent.firstChild);
     }
   }
+}
+
+function currentTime() {
+  var currentDate = new Date();
+  var timer = document.getElementById("time-display");
+  let hh = currentDate.getHours();
+  let mm = currentDate.getMinutes();
+  let ss = currentDate.getSeconds();
+  let session = "AM";
+
+  if (hh == 0) {
+    hh = 12;
+  }
+  if (hh > 12) {
+    hh = hh - 12;
+    session = "PM";
+  }
+
+  hh = hh < 10 ? "0" + hh : hh;
+  mm = mm < 10 ? "0" + mm : mm;
+  ss = ss < 10 ? "0" + ss : ss;
+
+  let time = hh + ":" + mm + ":" + ss + " " + session;
+
+  timer.innerText = time;
+  return time;
 }
