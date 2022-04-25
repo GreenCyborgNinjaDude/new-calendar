@@ -211,6 +211,7 @@ function initCalendar(elementId, settings) {
             //var hover = "table td:hover{ background-color: rgb(81, 189, 240)}";
             tag.className = "date";
             tag.textContent = element.date.getDate();
+
             if (element.dayType === "pad") {
               tag.style.backgroundColor = "grey";
             }
