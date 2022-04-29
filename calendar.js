@@ -1,27 +1,29 @@
+
+//month in full title
+var monthTitle = [
+  "January",
+  "Febuary",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
+];
+
+//days in the week
+var daysInTheWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+
+//Calendar function & render
 function initCalendar(elementId, settings) {
   let state = {
     value: undefined,
     events: undefined,
   };
-
-  //month in full title
-  let monthTitle = [
-    "January",
-    "Febuary",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-    "August",
-    "September",
-    "October",
-    "November",
-    "December",
-  ];
-
-  //days in the week
-  let daysInTheWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
   init();
 
@@ -40,7 +42,6 @@ function initCalendar(elementId, settings) {
   // calendar-container-whole
   function createCalendarContainerWhole() {
     var calendarContainerWhole = document.getElementById(elementId);
-
     removeAllChildNodes(calendarContainerWhole);
 
     calendarContainerWhole.className = "calendar-container-whole";
@@ -407,20 +408,84 @@ function initCalendar(elementId, settings) {
       }
     }
   }
+}
 
-  //create tag & set style for that tag
-  function createTag(parent, type, adjustStyleCallback) {
-    if (!parent) return;
-    var tag = document.createElement(type);
-    parent.appendChild(tag);
-    adjustStyleCallback(tag);
-    return tag;
+//set time very 1000 millisec or 1 sec
+setInterval(() => currentTime(), 1000);
+
+//Information Center (about the calander)
+function initInfoCenter(elementId, settings){
+  //state of Information Center
+  let state = {
+        events: undefined,
+        value: undefined,
+        dateShow: undefined,
+        clickedDateshow: undefined,
+        timeShow: undefined,
+        eventShow: undefined,
+  };
+ 
+  if (settings.showInfoCenter === true){
+    console.log("info-center is up: " + settings.showInfoCenter);
+    init();
   }
 
-  //remove all element in a container
-  function removeAllChildNodes(parent) {
-    while (parent.firstChild) {
-      parent.removeChild(parent.firstChild);
+  //store html input into state
+  function init() {
+    state.events = settings.events,
+    state.value = settings.value,
+    state.dateShow = settings.dateShow;
+    state.clickedDateshow = settings.clickedDateshow;
+    state.timeShow = settings.timeShow,
+    state.eventShow = settings.eventShow,
+    render();
+  }
+
+  //render all information center component
+  function render(){
+    var parent = createInfoCenter();
+    createInformationTitle(parent);
+    createDateShowContainer(parent, settings);
+    //createClickedDateShowContainer(parent, settings);
+    //createTimeShowContainer(parent, settings);
+    //createEventShowContainer(parent, settings);
+  }
+
+  function createInfoCenter(){
+    var infoCenter = document.getElementById(elementId);
+    //removeAllChildNodes(infoCenter);
+    infoCenter.className = "information-center";
+    return infoCenter
+  }
+
+  function createInformationTitle(parent){
+    var infoTitle = createTag(parent, "div", (tag) => {
+      tag.className = "information-title"
+      tag.textContent = "Information Center"
+    }) 
+  }
+  
+  function createDateShowContainer(parent){
+    if(state.dateShow === true){
+      var dateShow = createTag(parent, "div", (tag) =>{
+        tag.className = "today-date-container"
+      });
+      createTodayHeader();
+      createTodayDate();
+
+      function createTodayHeader(){
+          var todayTitle = createTag (dateShow, "div", (tag) => {
+            tag.className = "today-date-header"
+            tag.textContent = "Today's Date"
+          })
+      }
+
+      function createTodayDate(){
+        var todayDate = createTag (dateShow, "div", (tag) => {
+          tag.className = "today-date"
+          tag.textContent = daysInTheWeek[state.value.getDay()] + " - " + monthTitle[state.value.getMonth()] + "/" + state.value.getDate() + "/" + state.value.getFullYear()
+        })
+      }
     }
   }
 }
@@ -451,5 +516,18 @@ function currentTime() {
   return time;
 }
 
-//set time very 1000 millisec or 1 sec
-setInterval(() => currentTime(), 1000);
+//create tag & set style for that tag
+function createTag(parent, type, adjustStyleCallback) {
+  if (!parent) return;
+  var tag = document.createElement(type);
+  parent.appendChild(tag);
+  adjustStyleCallback(tag);
+  return tag;
+}
+
+//remove all element in a container
+function removeAllChildNodes(parent) {
+  while (parent.firstChild) {
+    parent.removeChild(parent.firstChild);
+  }
+}

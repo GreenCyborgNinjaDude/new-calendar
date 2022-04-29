@@ -1,3 +1,4 @@
+/* Calendar Style */
 .calendar-container-whole{
     display: inline-block;
     width: 45vw;
@@ -148,5 +149,109 @@
 .date:hover{
     background-color: rgb(81, 189, 240);
 }
+
+/*Info-center Style*/
+.information-center{
+    margin-left : 4px;
+    position:absolute;
+    text-align: center;
+    display:inline-block;
+    width: 19.43%;
+    border: solid 4px rgb(0, 0, 0);
+    font-family:'Times New Roman', Times, serif;
+    font-size: 17px;
+    font-weight: bolder;
+    max-height: 710px;
+    
+}
+.information-title{
+    background-color: rgb(206, 36, 36);
+    width: 100%;
+    border-bottom: solid 4px rgb(0, 0, 0);
+}
+.today-date-container{
+    display: block;
+    grid-template-rows: 50% 50%;
+    border-bottom: solid 4px rgb(0, 0, 0);
+    width: 100%;
+}
+.today-date-header{
+    background-color: rgb(71, 157, 255);
+    text-align: center;    
+    font-family:'Times New Roman', Times, serif;
+    font-weight: bold;
+    border-bottom: solid 4px rgb(0, 0, 0);
+    height: 30%;
+    
+}
+.today-date{
+    background-color: rgb(253, 236, 204);
+    text-align: center;
+    font-family:'Times New Roman', Times, serif;
+    height: 30%;
+}
+
+.clicked-date-container{
+    display: block;
+    grid-template-rows: 50% 50%;
+    border-bottom: solid 4px rgb(0, 0, 0);
+    width: 100%;
+}
+.clicked-date-header{
+    background-color: rgb(71, 157, 255);
+    text-align: center;
+    font-family:'Times New Roman', Times, serif;
+    font-weight: bold;
+    border-bottom: solid 4px rgb(0, 0, 0);
+    height: 25px;
+}
+.clicked-date{
+    text-align: center;
+    font-family:'Times New Roman', Times, serif;
+    height: 25px;
+}
+
+.time-container{
+    display: block;
+    grid-template-rows: 50% 50%;
+    border-bottom: solid 4px rgb(0, 0, 0);
+    width: 100%;
+}
+.time-header{
+    background-color: rgb(71, 157, 255);
+    text-align: center;
+    font-family:'Times New Roman', Times, serif;
+    font-weight: bold;
+    border-bottom: solid 4px rgb(0, 0, 0);
+    height: 25px;
+}
+.time-display{
+    text-align: center;
+    font-family:'Times New Roman', Times, serif;
+    height: 25px;
+}
+
+.event-container{
+    display: block;
+    grid-template-rows: 50% 50%;
+    width: 100%;
+}
+.event-header{
+    background-color: rgb(71, 157, 255);
+    text-align: center;
+    font-family:'Times New Roman', Times, serif;
+    font-weight: bold;
+    
+    height: 25px;
+}
+.event-adder{
+    display: block;
+    border-top: solid 4px rgb(0, 0, 0);
+    text-align: center;
+    font-family:'Times New Roman', Times, serif;
+    overflow-y: scroll;
+    max-height: 458px;
+}
+
 
 /* https://www.youtube.com/watch?v=TdqQqyc7pfU */

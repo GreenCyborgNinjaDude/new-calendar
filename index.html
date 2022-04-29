@@ -45,6 +45,7 @@
       var current = new Date();
 
       window.onload = function () {
+        //Calendar Initialized
         initCalendar("my-calendar", {
           events: events,
           value: current,
@@ -55,13 +56,23 @@
           onSetEvent: () => {},
           addEvent: () => {},
         });
+       //Information Center Initialized
+        initInfoCenter("info-center", {
+          events: events,
+          value: current,
+          showInfoCenter: true,
+          dateShow: true,
+          clickedDateshow: true,
+          timeShow: true,
+          eventShow: true,
+        });
       };
     </script>
   </head>
 
   <body>
     <div id="my-calendar"></div>
-
+    <div id="info-center"></div>
     <editform> </editform>
   </body>
 </html>
