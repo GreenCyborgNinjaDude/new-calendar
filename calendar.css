@@ -161,7 +161,8 @@
     font-family:'Times New Roman', Times, serif;
     font-size: 17px;
     font-weight: bolder;
-    max-height: 710px;
+    height: auto;
+    max-height: 85vh;
     
 }
 .information-title{
@@ -203,12 +204,12 @@
     font-family:'Times New Roman', Times, serif;
     font-weight: bold;
     border-bottom: solid 4px rgb(0, 0, 0);
-    height: 25px;
+    height: 30%;
 }
 .clicked-date{
     text-align: center;
     font-family:'Times New Roman', Times, serif;
-    height: 25px;
+    height: 30%;
 }
 
 .time-container{
@@ -223,12 +224,12 @@
     font-family:'Times New Roman', Times, serif;
     font-weight: bold;
     border-bottom: solid 4px rgb(0, 0, 0);
-    height: 25px;
+    height: 30%;
 }
 .time-display{
     text-align: center;
     font-family:'Times New Roman', Times, serif;
-    height: 25px;
+    height: 30%;
 }
 
 .event-container{

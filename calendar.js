@@ -1,3 +1,9 @@
+//State of the Program 
+var state = {
+  value: undefined,
+  events: undefined,
+  clickedDate: undefined,
+};
 
 //month in full title
 var monthTitle = [
@@ -217,6 +223,10 @@ function initCalendar(elementId, settings) {
               tag.style.backgroundColor = "grey";
             }
 
+            tag.onclick = () => {
+              settings.showClickedDate && settings.showClickedDate();
+              document.getElementById("clicked-date").innerText = daysInTheWeek[element.date.getDay()] + " - " + monthTitle[element.date.getMonth()] + "/" + element.date.getDate() + "/" + element.date.getFullYear()
+            }
             //prevent adding unwanted event form & delete scripted event
             tag.ondblclick = () => {
               //alert("date is clicked");
@@ -410,11 +420,9 @@ function initCalendar(elementId, settings) {
   }
 }
 
-//set time very 1000 millisec or 1 sec
-setInterval(() => currentTime(), 1000);
-
 //Information Center (about the calander)
 function initInfoCenter(elementId, settings){
+
   //state of Information Center
   let state = {
         events: undefined,
@@ -445,9 +453,9 @@ function initInfoCenter(elementId, settings){
   function render(){
     var parent = createInfoCenter();
     createInformationTitle(parent);
-    createDateShowContainer(parent, settings);
-    //createClickedDateShowContainer(parent, settings);
-    //createTimeShowContainer(parent, settings);
+    createDateShowContainer(parent);
+    createClickedDateContainer(parent);
+    createTimeShowContainer(parent);
     //createEventShowContainer(parent, settings);
   }
 
@@ -458,6 +466,7 @@ function initInfoCenter(elementId, settings){
     return infoCenter
   }
 
+  //Info-center Title
   function createInformationTitle(parent){
     var infoTitle = createTag(parent, "div", (tag) => {
       tag.className = "information-title"
@@ -465,6 +474,7 @@ function initInfoCenter(elementId, settings){
     }) 
   }
   
+  //Show today's date
   function createDateShowContainer(parent){
     if(state.dateShow === true){
       var dateShow = createTag(parent, "div", (tag) =>{
@@ -487,6 +497,73 @@ function initInfoCenter(elementId, settings){
         })
       }
     }
+  }
+
+  //Show Clicked Date
+  function  createClickedDateContainer(parent) {
+    if(state.clickedDateshow === true){
+      var clickDateContainer = createTag(parent, "div", (tag) => {
+        tag.className = "clicked-date-container"
+      });
+      createClickedDateTitle();
+      createShowClickedDate();
+      
+      function createClickedDateTitle(){
+        var clickedTitle = createTag (clickDateContainer, "div", (tag) => {
+          tag.className = "clicked-date-header"
+          tag.textContent = "Clicked Date"
+        });
+      }
+
+      function createShowClickedDate(){
+        var showDate = createTag (clickDateContainer, "div", (tag) => {
+           tag.className = "clicked-date"
+           tag.id = "clicked-date"
+        });
+      }
+    }
+  }
+
+  //Show Current Time
+  function createTimeShowContainer(parent) {
+    if(state.timeShow === true){
+      var clickDateContainer = createTag(parent, "div", (tag) => {
+        tag.className = "time-container"
+      });
+      createTimeTitle();
+      createShowTime();
+      
+      function createTimeTitle(){
+        var clickedTitle = createTag (clickDateContainer, "div", (tag) => {
+          tag.className = "time-header"
+          tag.textContent = "Current Time"
+        });
+      }
+
+      function createShowTime(){
+        var showDate = createTag (clickDateContainer, "div", (tag) => {
+           tag.className = "time-display"
+           tag.id = "time-display"
+        });
+      }
+    }
+  }
+  
+}
+
+//create tag & set style for that tag
+function createTag(parent, type, adjustStyleCallback) {
+  if (!parent) return;
+  var tag = document.createElement(type);
+  parent.appendChild(tag);
+  adjustStyleCallback(tag);
+  return tag;
+}
+
+//remove all element in a container
+function removeAllChildNodes(parent) {
+  while (parent.firstChild) {
+    parent.removeChild(parent.firstChild);
   }
 }
 
@@ -511,23 +588,9 @@ function currentTime() {
   ss = ss < 10 ? "0" + ss : ss;
 
   let time = hh + ":" + mm + ":" + ss + " " + session;
-
-  //console.log("inside clock: " + time);
+  
+  document.getElementById("time-display").innerText = time; 
+  let t = setTimeout(function(){ currentTime() }, 1000);
   return time;
-}
-
-//create tag & set style for that tag
-function createTag(parent, type, adjustStyleCallback) {
-  if (!parent) return;
-  var tag = document.createElement(type);
-  parent.appendChild(tag);
-  adjustStyleCallback(tag);
-  return tag;
-}
-
-//remove all element in a container
-function removeAllChildNodes(parent) {
-  while (parent.firstChild) {
-    parent.removeChild(parent.firstChild);
-  }
+  
 }
