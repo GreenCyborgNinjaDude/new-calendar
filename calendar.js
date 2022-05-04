@@ -3,6 +3,7 @@ var state = {
   value: undefined,
   events: undefined,
   clickedDate: undefined,
+  refreshEventBoard: false
 };
 
 //month in full title
@@ -23,6 +24,7 @@ var monthTitle = [
 
 //days in the week
 var daysInTheWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+
 
 //Calendar function & render
 function initCalendar(elementId, settings) {
@@ -290,6 +292,7 @@ function initCalendar(elementId, settings) {
                   tag.onclick = () => {
                     settings.addEvent && settings.addEvent();
                     alert("clicked");
+                    state.refreshEventBoard = true;
 
                     //check if a date does have a reminder
                     if (
@@ -323,9 +326,10 @@ function initCalendar(elementId, settings) {
                     //     " " +
                     //     element.date.getFullYear()
                     // );
-                    // console.log(document.getElementById("user-event").value);
-                    // console.log("Reminder: " + data.reminder);
-                    // console.log(document.getElementById("user-time").value);
+                    //  console.log(document.getElementById("user-event").value);
+                    //  console.log("Reminder: " + data.reminder);
+                    //  console.log("Alarm: " + data.alarm);
+                    //  console.log(document.getElementById("user-time").value);
                     date.removeChild(eventContainer);
 
                     //render event to calendar
@@ -453,15 +457,24 @@ function initInfoCenter(elementId, settings){
   function render(){
     var parent = createInfoCenter();
     createInformationTitle(parent);
-    createDateShowContainer(parent);
-    createClickedDateContainer(parent);
-    createTimeShowContainer(parent);
-    //createEventShowContainer(parent, settings);
+    if(state.dateShow === true){
+      createDateShowContainer(parent);
+    }
+    if(state.clickedDateshow === true){
+      createClickedDateContainer(parent);
+    }
+    if(state.timeShow === true){
+      createTimeShowContainer(parent);
+    }
+    if(state.eventShow === true){
+     createEventShowContainer(parent);
+    }
+
   }
 
   function createInfoCenter(){
     var infoCenter = document.getElementById(elementId);
-    //removeAllChildNodes(infoCenter);
+    removeAllChildNodes(infoCenter);
     infoCenter.className = "information-center";
     return infoCenter
   }
@@ -476,7 +489,6 @@ function initInfoCenter(elementId, settings){
   
   //Show today's date
   function createDateShowContainer(parent){
-    if(state.dateShow === true){
       var dateShow = createTag(parent, "div", (tag) =>{
         tag.className = "today-date-container"
       });
@@ -497,11 +509,10 @@ function initInfoCenter(elementId, settings){
         })
       }
     }
-  }
+  
 
   //Show Clicked Date
   function  createClickedDateContainer(parent) {
-    if(state.clickedDateshow === true){
       var clickDateContainer = createTag(parent, "div", (tag) => {
         tag.className = "clicked-date-container"
       });
@@ -522,11 +533,9 @@ function initInfoCenter(elementId, settings){
         });
       }
     }
-  }
 
   //Show Current Time
   function createTimeShowContainer(parent) {
-    if(state.timeShow === true){
       var clickDateContainer = createTag(parent, "div", (tag) => {
         tag.className = "time-container"
       });
@@ -547,7 +556,32 @@ function initInfoCenter(elementId, settings){
         });
       }
     }
-  }
+  
+  //Show Added Event & Scripted Event
+  function createEventShowContainer(parent) {
+      var eventsContainer = createTag(parent, "div", (tag) => {
+        tag.className = "event-info-container"
+      });
+      createEventTitle();
+      createEventShow();
+
+      function createEventTitle(){
+        var eventTitle = createTag (eventsContainer, "div", (tag) => {
+          tag.className = "event-header"
+          tag.textContent = "Event Header"
+        });
+      }
+
+      function createEventShow(){
+        state.events.forEach(element => {
+          var eventShow = createTag (eventsContainer, "div", (tag) => {
+            tag.className = "event-adder"
+            tag.style.backgroundColor = random_bg_color();
+            tag.textContent = element.date + " | " + element.event + " | " + element.time
+          });
+        })
+      }
+    }
   
 }
 
@@ -593,4 +627,15 @@ function currentTime() {
   let t = setTimeout(function(){ currentTime() }, 1000);
   return time;
   
+}
+
+//Random background color (each time created)
+function random_bg_color() {
+  var x = Math.floor(Math.random() * 256);
+  var y = Math.floor(Math.random() * 256);
+  var z = Math.floor(Math.random() * 256);
+  var bgColor = "rgb(" + x + "," + y + "," + z + ")";
+  //console.log(bgColor);
+
+  return bgColor;
 }
