@@ -90,39 +90,45 @@
 
 .event-container{
     position: absolute;
-    padding-top: 10%;
     padding-left: 5%;
     height: 50%;
     width: 90%;
 }
 .user-event{
+    border: solid 2px rgb(0, 0, 0);
     position: absolute;
     display: block;
-    border: 2px solid black;
-    height: 30%;
+    height: 35%;
     width: 90%;
     resize: none;
     overflow: auto;
 }
 .user-time{
+    border: solid 2px rgb(0, 0, 0);
     position: absolute;
-    top: 50%;
+    top: 40%;
     display: block;
-    border-bottom: 2px solid black;
-    border-left: 2px solid black;
-    border-right: 2px solid black;
-    height: 30%;
+    height: 35%;
+    width: 90%;
+    resize: none;
+    overflow: auto;
+}
+.user-alarm{
+    border: solid 2px rgb(0, 0, 0);
+    position: absolute;
+    display: block;
+    top: 80%;
+    height: 35%;
     width: 90%;
     resize: none;
     overflow: auto;
 }
 .user-confirmation{
     position: absolute;
-    top: 83%;
-    margin-top: 2px;
+    top: 120%;
     display: inline;
     width: 48%;
-    height: 28%;
+    height: 35%;
 }
 .event{
     position: absolute;

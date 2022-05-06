@@ -265,6 +265,7 @@ function initCalendar(elementId, settings) {
               });
               createEventArea();
               createTimeArea();
+              createAlarmArea();
               createSubmitButton();
 
               //render write area for event
@@ -283,6 +284,16 @@ function initCalendar(elementId, settings) {
                   tag.setAttribute("placeholder", "HH:MM PM/AM");
                 });
               }
+
+              //render write area for time
+              function createAlarmArea() {
+                var time = createTag(eventContainer, "textarea", (tag) => {
+                  tag.className = "user-alarm";
+                  tag.id = "user-alarm";
+                  tag.setAttribute("placeholder", "Alarm-HH:MM ");
+                });
+              }
+
               //Submition button
               function createSubmitButton() {
                 var reminderCheck = false;
@@ -296,7 +307,7 @@ function initCalendar(elementId, settings) {
 
                     //check if a date does have a reminder
                     if (
-                      document.getElementById("user-time").value != "" ||
+                      document.getElementById("user-alarm").value != "" ||
                       null
                     ) {
                       reminderCheck = true;
@@ -304,7 +315,7 @@ function initCalendar(elementId, settings) {
 
                     //How event will be stored
                     let data = {
-                      date:
+                      date: 
                         monthTitle[element.date.getMonth()] +
                         " " +
                         element.date.getDate() +
@@ -313,9 +324,10 @@ function initCalendar(elementId, settings) {
                       time: document.getElementById("user-time").value,
                       event: document.getElementById("user-event").value,
                       reminder: reminderCheck,
+                      alarm: document.getElementById("user-alarm").value,
                       //description: "here lies very boring text.....",
                     };
-
+                    //console.log(data.alarm);
                     state.events.push(data);
                     // console.log(
                     //   daysInTheWeek[element.date.getDay()] +
@@ -393,28 +405,32 @@ function initCalendar(elementId, settings) {
               element.date.getDate() +
               " " +
               element.date.getFullYear();
-            events.forEach((selectedEvent) => {
-              //console.log(
-              //selectedEvent.date === currentDate
-              //currentTime() === "03:41 PM"
-              //selectedEvent.reminder === true
-              //);
-              if (
-                selectedEvent.date === currentDate &&
-                currentTime() ===
-                  selectedEvent.alarm.substring(0, 5) +
-                    ":" +
-                    "00" +
-                    selectedEvent.alarm.substring(5, 8) &&
-                selectedEvent.reminder === true
-              ) {
-                alert(
-                  "Event: " + selectedEvent.event + " At " + selectedEvent.time
-                );
-              }
+              //console.log("element: " + element);
+            state.events.forEach((selectedEvent) => {
+              //console.log(selectedEvent.date);
+              //console.log(selectedEvent.reminder);
+              //console.log(selectedEvent.time);
+              //console.log(selectedEvent.alarm.substring(0,2));
+              //console.log(selectedEvent.event);
+
+              //if(parseInt(selectedEvent.alarm.substring(0,2))){}
+
+              // if (
+              //   selectedEvent.date === currentDate &&
+              //   currentTime() ===
+              //     selectedEvent.alarm.substring(0, 5) +
+              //       ":" +
+              //       "00" +
+              //       selectedEvent.alarm.substring(5, 8) &&
+              //   selectedEvent.reminder === true
+              // ) {
+              //   alert(
+              //     "Event: " + selectedEvent.event + " At " + selectedEvent.time
+              //   );
+              // }
             });
           }
-          //
+          
         });
 
         //console.log(daysInMonth);
