@@ -569,6 +569,7 @@ function initInfoCenter(elementId, settings){
         var showDate = createTag (clickDateContainer, "div", (tag) => {
            tag.className = "time-display"
            tag.id = "time-display"
+           tag.textContent = currentTime();
         });
       }
     }
