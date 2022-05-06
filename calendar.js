@@ -643,7 +643,7 @@ function currentTime() {
   document.getElementById("time-display").innerText = time; 
   let t = setTimeout(function(){ currentTime() }, 1000);
   return time;
-  
+  //asd
 }
 
 //Random background color (each time created)
